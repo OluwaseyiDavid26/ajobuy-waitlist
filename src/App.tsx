@@ -51,7 +51,7 @@ function App() {
       <nav className="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-200 z-50">
         <div className="max-w-6xl mx-auto flex justify-between items-center px-4 py-3 md:py-4">
           <img
-            src="/src/assets/ajobuy-logo-removebg-preview.png"
+            src="/ajobuy-logo-removebg-preview.png"
             alt="Ajobuy Logo"
             className="h-10 md:h-12 cursor-pointer"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -252,7 +252,7 @@ function App() {
       <footer className="py-10 bg-gray-900 border-t border-gray-800 text-gray-400">
         <div className="max-w-5xl mx-auto px-6 text-center space-y-4">
           <img
-            src="/src/assets/ajobuy-logo-removebg-preview.png"
+            src="/ajobuy-logo-removebg-preview.png"
             alt="Ajobuy Logo"
             className="h-10 mx-auto mb-2"
           />
