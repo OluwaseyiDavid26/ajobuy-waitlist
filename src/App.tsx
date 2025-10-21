@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import {
   Users,
-  ShoppingBag,
+  // ShoppingBag,
   MessageCircle,
   TrendingUp,
   Sparkles,
