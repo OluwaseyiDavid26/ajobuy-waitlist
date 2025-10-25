@@ -10,12 +10,18 @@ import {
   X,
   ArrowUp,
 } from "lucide-react";
+import { useJoinWaitlist } from "./features/waitlist/waitlistApi";
+import toast from "react-hot-toast";
 
 function App() {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({ name: "", email: "" });
   const [menuOpen, setMenuOpen] = useState(false);
   const [showScroll, setShowScroll] = useState(false);
+  const { mutate, isPending } = useJoinWaitlist();
+
+  const isDisabled =
+    isPending || form.name.trim() === "" || form.email.trim() === "";
 
   // Scroll-to-top visibility
   useEffect(() => {
@@ -32,9 +38,24 @@ function App() {
 
   const handleSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log("Waitlist Entry:", form);
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
+
+    mutate(
+      { email: form.email },
+      {
+        onSuccess: () => {
+          toast.success("You’ve successfully joined the waitlist! 🎉");
+          setSubmitted(true);
+          setForm({ name: "", email: "" });
+          setTimeout(() => setSubmitted(false), 3000);
+        },
+        onError: (error) => {
+          const errorMessage =
+            error.message || "Something went wrong. Please try again later";
+          toast.error(errorMessage);
+          console.error("Waitlist submission failed:", error);
+        },
+      }
+    );
   };
 
   const scrollToSection = (id: string) => {
@@ -238,10 +259,15 @@ function App() {
                 className="w-full bg-orange-50 border-2 border-orange-200 text-gray-900 rounded-xl px-5 py-4 focus:outline-none focus:border-orange-600 focus:ring-2 focus:ring-orange-600/20 transition"
               />
               <button
+                disabled={isDisabled}
                 onClick={handleSubmit}
-                className="w-full bg-orange-600 text-white font-bold text-lg py-4 rounded-xl hover:bg-orange-700 hover:shadow-xl transition-all transform hover:scale-105"
+                className={`w-full font-bold text-lg py-4 rounded-xl transition-all transform ${
+                  isDisabled
+                    ? "bg-orange-300 cursor-not-allowed"
+                    : "bg-orange-600 hover:bg-orange-700 hover:shadow-xl hover:scale-105 text-white"
+                }`}
               >
-                Secure My Spot
+                {isPending ? "Submitting..." : "Secure My Spot"}
               </button>
             </form>
           )}
